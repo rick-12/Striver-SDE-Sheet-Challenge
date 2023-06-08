@@ -19,22 +19,15 @@
 
 *****************************************************************/
 typedef LinkedListNode<int> Node;
-Node* helper(Node* head, Node* ptr, Node* tail) {
-    if(head == tail) return head;
-    head->next = NULL;
-    ptr = helper(ptr, ptr->next, tail);
-    tail->next = head;
-    tail = tail->next;
-    return ptr;
-}
 LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head) 
 {
     if(head == NULL or head->next == NULL) return head;
-    Node* ptr = head->next, *tail = ptr;
-    while(tail->next != NULL) {
-        tail = tail->next;
+    Node* left = NULL, *right = head;
+    while(head != NULL) {
+        right = right->next;
+        head->next = left;
+        left = head;
+        head = right;
     }
-    
-    ptr = helper(head, ptr, tail);
-    return ptr;
+    return left;
 }
