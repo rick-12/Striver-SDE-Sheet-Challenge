@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+int multiply(int x, int y, int m)
+{
+    int ans = 0;
+    while(y > 0)
+    {
+		int b = y & 1;
+		if(b) {
+			ans = (ans + x) % m;
+		}
+		x = (x * 2) % m;
+		y >>= 1;
+    }
+    return ans;
+}
+int modularExponentiation(int x, int n, int m) {
+	// Write your code here.
+	int ans = 1;
+	while(n > 0) {
+		int b = n & 1;
+		if(b) {
+			ans = multiply(ans, x, m);
+		} 
+		x = multiply(x, x, m);
+		n >>= 1;
+	}
+	return ans;
+}
