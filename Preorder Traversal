@@ -15,16 +15,14 @@ vector<int> getPreOrderTraversal(TreeNode *root)
 {
     vector<int> ans;
     stack<TreeNode*> st;
-    if(root)
-        st.push(root);
+    st.push(root);
     while(!st.empty()) {
         TreeNode* ptr = st.top();
         st.pop();
+        if(!ptr) continue;
         ans.push_back(ptr->data);
-        if(ptr->right)
-            st.push(ptr->right);
-        if(ptr->left)
-            st.push(ptr->left);
+        st.push(ptr->right);
+        st.push(ptr->left);
     }
     return ans;
 }
