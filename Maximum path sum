@@ -1,0 +1,45 @@
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the Tree node structure
+	
+	template <typename T>
+    class TreeNode 
+    {
+        public : 
+        T val;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T val) 
+        {
+            this -> val = val;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+typedef long long int ll;
+ll dfs(TreeNode<int> *root, ll& ans) {
+    if(root == nullptr) return -1LL;
+    if(root->left == NULL and root->right == NULL) return root->val;
+    ll leftValue = dfs(root->left, ans);
+    ll rightValue = dfs(root->right, ans);
+    if(leftValue != -1 and rightValue != -1)
+        ans = max(ans, leftValue + rightValue + root->val);
+    ll res = 0LL;
+    if(leftValue != -1) {
+        res = max(res, leftValue);
+    }
+    if(rightValue != -1) {
+        res = max(res, rightValue);
+    }
+    return res + root->val;
+}
+long long int findMaxSumPath(TreeNode<int> *root)
+{
+    ll ans = -1LL;
+    ll value = dfs(root, ans);
+    return ans;   
+}
