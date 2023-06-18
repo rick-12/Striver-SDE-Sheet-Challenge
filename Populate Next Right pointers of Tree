@@ -1,0 +1,48 @@
+#include <bits/stdc++.h> 
+/*
+    ----------------- Binary Tree node class for reference -----------------
+
+    template <typename T>
+    class BinaryTreeNode {
+        public : 
+            T data;
+            BinaryTreeNode<T> *left;
+            BinaryTreeNode<T> *right;
+            BinaryTreeNode<T> *next;
+
+            BinaryTreeNode(T data) {
+                this -> data = data;
+                left = NULL;
+                right = NULL;
+                next = NULL;
+            }
+    };
+*/
+
+void connectNodes(BinaryTreeNode<int> *root) {
+    while(root) {
+        BinaryTreeNode<int> *temp = root;
+        BinaryTreeNode<int> *nextRoot = NULL, *ptr = NULL;
+        while(temp) {
+            if(temp->left) {
+                if(!nextRoot) {
+                    nextRoot = temp->left;
+                }
+                else {
+                    ptr->next = temp->left; 
+                }
+                ptr = temp->left;
+            }
+            if(temp->right) {
+                if(!nextRoot) {
+                    nextRoot = temp->right;
+                } else {
+                    ptr->next = temp->right;
+                }
+                ptr = temp->right;
+            }
+            temp = temp->next;
+        }
+        root = nextRoot;
+    }
+}
