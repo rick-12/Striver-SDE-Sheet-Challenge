@@ -1,0 +1,32 @@
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+int longestPath(TreeNode<int> *root, int& ans) {
+    if(root == NULL) return 0;
+    int leftValue = longestPath(root->left, ans);
+    int rightValue = longestPath(root->right, ans);
+    ans = max(ans, leftValue + rightValue);
+    return 1 + max(leftValue, rightValue);
+}
+int diameterOfBinaryTree(TreeNode<int> *root)
+{
+    int ans = 0;
+    int value = longestPath(root, ans);
+    return ans;
+}
