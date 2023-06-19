@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+/************************************************************
+   
+   Following is the TreeNode class structure
+   
+   class TreeNode<T>
+   { 
+   public:
+        T data; 
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+   
+        TreeNode(T data) 
+  		{ 
+            this -> data = data; 
+            left = NULL; 
+            right = NULL; 
+        }
+   };
+   
+   
+ ************************************************************/
+TreeNode<int> *getTreeFromPostorderAndInorderHelper(vector<int>& postorder, vector<int>& inorder, int low1, int high1, int low2, int high2, unordered_map<int, int>& hashMap) {
+     if(low1 > high1) return NULL;
+     int mid = hashMap[postorder[high1]];
+     int n = high2 - mid;
+     TreeNode<int> *root = new TreeNode<int>(inorder[mid]);
+     root->left = getTreeFromPostorderAndInorderHelper(postorder, inorder, low1, high1 - n - 1, low2, mid - 1, hashMap);
+     root->right = getTreeFromPostorderAndInorderHelper(postorder, inorder, high1 - n, high1 - 1, mid + 1, high2, hashMap);
+     return root;
+}
+TreeNode<int>* getTreeFromPostorderAndInorder(vector<int>& postorder, vector<int>& inorder) 
+{
+     int n = postorder.size();
+     unordered_map<int, int> hashMap;
+     for(int i = 0; i < n; i++) {
+          hashMap[inorder[i]] = i;
+     }
+     return getTreeFromPostorderAndInorderHelper(postorder, inorder, 0, n - 1, 0, n - 1, hashMap);
+}
