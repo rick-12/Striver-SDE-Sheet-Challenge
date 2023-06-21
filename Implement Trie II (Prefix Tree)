@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+class Node {
+public:
+    Node **arr;
+    int ew;
+    int cp;
+    Node() {
+        arr = new Node*[26]{};
+        ew = 0;
+        cp = 0;
+    }
+};
+class Trie{
+    Node *root;
+public:
+    Trie(){
+        root = new Node();
+    }
+
+    void insert(string &word){
+        int n = word.length();
+        Node *curr = root;
+        for(int i = 0; i < n; i++) {
+            int index = word[i] - 'a';
+            if(curr->arr[index] == NULL) {
+                curr->arr[index] = new Node();
+            }
+            curr = curr->arr[index];
+            curr->cp++;
+        }
+        curr->ew++;
+    }
+
+    int countWordsEqualTo(string &word){
+        int n = word.length();
+        Node *curr = root;
+        for(int i = 0; i < n; i++) {
+            int index = word[i] - 'a';
+            if(curr->arr[index] == NULL) {
+                return 0;
+            }
+            curr = curr->arr[index];
+        }
+        return curr->ew;
+    }
+
+    int countWordsStartingWith(string &word){
+        int n = word.length();
+        Node *curr = root;
+        for(int i = 0; i < n; i++) {
+            int index = word[i] - 'a';
+            if(curr->arr[index] == NULL) {
+                return 0;
+            }
+            curr = curr->arr[index];
+        }
+        return curr->cp;
+    }
+
+    void erase(string &word){
+        int n = word.length();
+        Node *curr = root;
+        for(int i = 0; i < n; i++) {
+            int index = word[i] - 'a';
+            curr->cp--;
+            curr = curr->arr[index];
+        }
+        curr->cp--;
+        curr->ew--;
+    }
+};
