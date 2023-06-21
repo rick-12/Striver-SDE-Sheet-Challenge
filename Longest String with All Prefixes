@@ -1,0 +1,60 @@
+#include <bits/stdc++.h> 
+class Node {
+public:
+    Node **children;
+    bool isEnd;
+    Node() {
+        children = new Node*[26]{};
+        isEnd = false;
+    }
+};
+class Trie {
+public:
+    Node *root;
+    Trie() {
+        root = new Node();
+        root->isEnd = true;
+    }
+    void insert(string &word) {
+        int n = word.size();
+        Node *curr = root;
+        for(int i = 0; i < n; i++) {
+            int index = word[i] - 'a';
+            if(curr->children[index] == NULL) {
+                curr->children[index] = new Node();
+            }
+            curr = curr->children[index];
+        }
+        curr->isEnd = true;
+    }
+};
+void dfs(Node *node, string &ans, string &s) {
+    if(!node->isEnd) return;
+    bool flag = true;
+    for(int i = 0; i < 26; i++) {
+        Node *next = node->children[i];
+        if(next) {
+            flag = false;
+            s.push_back(char(i + 'a'));
+            dfs(next, ans, s);
+            s.pop_back();
+        }
+    }
+    if(flag) {
+        if(s.length() > ans.length()) {
+            ans = s;
+        }
+    }
+}
+string completeString(int n, vector<string> &a){
+    // Write your code here.
+    Trie *trie = new Trie();
+    for(string &word: a) {
+        trie->insert(word);
+    }
+    string ans = "", s = "";
+    dfs(trie->root, ans, s);
+    if(ans.length())
+        return ans;
+    return "None";
+}
