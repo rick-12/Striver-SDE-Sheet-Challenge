@@ -7,9 +7,6 @@ int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
             if(weights[i - 1] <= j) {
                 curr[j] = max(curr[j], values[i - 1] + curr[j - weights[i - 1]]);
             }
-            else {
-                curr[j] = curr[j];
-            }
         }
     }
     return curr[w];
