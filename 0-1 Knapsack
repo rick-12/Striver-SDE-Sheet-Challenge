@@ -1,0 +1,16 @@
+#include<bits/stdc++.h>
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+    vector<int> curr(w + 1, 0);
+    for(int i = 1; i <= n; i++) {
+        for(int j = w; j >= 0; j--) {
+            if(weights[i - 1] <= j) {
+                curr[j] = max(curr[j], values[i - 1] + curr[j - weights[i - 1]]);
+            }
+            else {
+                curr[j] = curr[j];
+            }
+        }
+    }
+    return curr[w];
+}
