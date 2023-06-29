@@ -1,0 +1,31 @@
+#include <bits/stdc++.h> 
+vector<vector<pair<int, int>>> createGraph(vector<vector<int>> &vec, int vertices) {
+    vector<vector<pair<int, int>>> adj(vertices, vector<pair<int, int>>());
+    for(vector<int>& v: vec) {
+        adj[v[0]].push_back(make_pair(v[1], v[2]));
+        adj[v[1]].push_back(make_pair(v[0], v[2]));
+    }
+    return adj;
+}
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+    vector<int> dist(vertices, INT_MAX);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    dist[source] = 0;
+    pq.push(make_pair(0, source));
+    vector<vector<pair<int, int>>> adj = createGraph(vec, vertices);
+    while(!pq.empty()) {
+        pair<int, int> p = pq.top();
+        int node = p.second;
+        int distance = p.first;
+        pq.pop();
+        for(pair<int, int>& child: adj[node]) {
+            int childNode = child.first;
+            int childDist = child.second;
+            if(dist[node] + childDist < dist[childNode]) {
+                dist[childNode] = dist[node] + childDist;
+                pq.push(make_pair(dist[childNode], childNode));
+            }
+        }
+    }
+    return dist;
+}
