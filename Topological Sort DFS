@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+vector<vector<int>> createGraph(vector<vector<int>> &edges, int v) {
+    vector<vector<int>> adj(v, vector<int>());
+    for(auto& it: edges) {
+        adj[it[0]].push_back(it[1]);
+    }
+    return adj;
+}
+void dfs(vector<vector<int>>& adj, vector<bool>& vis, int src, vector<int>& ans) {
+    if(vis[src]) return;
+    vis[src] = true;
+    for(int child: adj[src]) {
+        dfs(adj, vis, child, ans);
+    }
+    ans.push_back(src);
+}
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  {
+    vector<vector<int>> adj = createGraph(edges, v);
+
+    vector<int> ans;
+    vector<bool> vis(v, false);
+    for(int i = 0; i < v; i++) {
+        dfs(adj, vis, i, ans);
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
