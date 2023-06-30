@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+vector<vector<pair<int, int>>> createGraph(int n, vector<pair<pair<int, int>, int>> &g) {
+    vector<vector<pair<int, int>>> adj(n + 1, vector<pair<int, int>>());
+    for(auto& it: g) {
+        adj[it.first.first].push_back(make_pair(it.first.second, it.second));
+        adj[it.first.second].push_back(make_pair(it.first.first, it.second));
+    }
+    return adj;
+}
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g)
+{
+    vector<pair<pair<int, int>, int>> mst;
+    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+    vector<vector<pair<int, int>>> adj = createGraph(n, g);
+    vector<bool> vis(n + 1, false);
+    pq.push(make_pair(0, make_pair(1, 0)));
+    while(!pq.empty()) {
+        auto it = pq.top();
+        pq.pop();
+        int node = it.second.first;
+        if(vis[node]) continue;
+        vis[node] = true;
+        if(it.second.second) {
+            mst.push_back(make_pair(make_pair(it.second.second, it.second.first), it.first));
+        }
+        for(auto& it: adj[node]) {
+            if(vis[it.first]) continue;
+            pq.push(make_pair(it.second, make_pair(it.first, node)));
+        }
+    }
+    return mst;
+}
