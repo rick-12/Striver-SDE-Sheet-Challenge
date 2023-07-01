@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    vector<vector<int>> adj(n + 1, vector<int>());
+    for(auto& it: edges) {
+        adj[it[0]].push_back(it[1]);
+        adj[it[1]].push_back(it[0]);
+    }
+    vector<bool> vis(n + 1, false);
+    for(int i = 1; i <= n; i++) {
+        if(vis[i]) continue;
+        queue<pair<int, int>> q;
+        vis[i] = true;
+        q.push(make_pair(i, 0));
+        while(!q.empty()) {
+            int node = q.front().first;
+            int parent = q.front().second;
+            q.pop();
+            for(int child: adj[node]) {
+                if(child == parent) continue;
+                if(vis[child]) return "Yes";
+                vis[child] = true;
+                q.push(make_pair(child, node));
+            }
+        }
+    }
+    return "No";
+}
