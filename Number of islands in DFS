@@ -1,0 +1,33 @@
+vector<vector<int>> movements = {
+   {0, 1},
+   {1, 0},
+   {0, -1},
+   {-1, 0},
+   {1, -1},
+   {1, 1},
+   {-1, 1},
+   {-1, -1}
+};
+void dfs(int** arr, vector<vector<bool>>& vis, int i, int j, int m, int n) {
+   vis[i][j] = true;
+   for(auto& it: movements) {
+      int x = i + it[1];
+      int y = j + it[0];
+      if(x >= 0 and x < n and y >= 0 and y < m and arr[x][y] and !vis[x][y]) {
+         dfs(arr, vis, x, y, m, n);
+      }
+   }
+}
+int getTotalIslands(int** arr, int n, int m)
+{
+   vector<vector<bool>> vis(n, vector<bool>(m, false));
+   int ans = 0;
+   for(int i = 0; i < n; i++) {
+      for(int j = 0; j < m; j++) {
+         if(!arr[i][j] or vis[i][j]) continue;
+         dfs(arr, vis, i, j, m, n);
+         ans++;
+      }
+   }
+   return ans;
+}
