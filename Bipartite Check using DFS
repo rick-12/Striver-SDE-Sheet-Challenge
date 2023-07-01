@@ -1,0 +1,27 @@
+bool dfs(int node, vector<vector<int>> &edges, vector<int>& color) {
+	for(int child = 0; child < edges.size(); child++) {
+		if(edges[node][child]) {
+			if(color[child] != -1) {
+				if(color[child] == color[node]) return false;
+				continue;
+			}
+			color[child] = 1 - color[node];
+			if(!dfs(child, edges, color)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+bool isGraphBirpatite(vector<vector<int>> &edges) {
+	int n = edges.size();
+	vector<int> color(n, -1);
+	for(int i = 0; i < n; i++) {
+		if(color[i] != -1) continue;
+		color[i] = 0;
+		if(!dfs(i, edges, color)) {
+			return false;
+		}
+	}
+	return true;
+}
