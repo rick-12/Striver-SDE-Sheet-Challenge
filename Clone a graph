@@ -1,0 +1,51 @@
+#include <bits/stdc++.h> 
+/***************************************************************************
+
+	Class for graph node is as follows:
+
+	class graphNode
+	{
+		public:
+    		int data;
+    	vector<graphNode *> neighbours;
+    	graphNode()
+    	{
+        	data = 0;
+        	neighbours = vector<graphNode *>();
+    	}
+
+    	graphNode(int val)
+    	{
+        	data = val;
+        	neighbours = vector<graphNode *>();
+    	}
+
+    	graphNode(int val, vector<graphNode *> neighbours)
+    	{
+        	data = val;
+        	this->neighbours = neighbours;
+    	}
+	};
+
+******************************************************************************/
+void dfs(graphNode *node, graphNode* ans, unordered_map<graphNode*, bool>& vis, unordered_map<graphNode*, graphNode*>& objNode) {
+	vis[node] = true;
+	for(graphNode* childNode: node->neighbours) {
+		if(objNode.find(childNode) == objNode.end()) {
+			objNode[childNode] = new graphNode(childNode->data);
+		}
+		ans->neighbours.push_back(objNode[childNode]);
+		if(!vis[childNode]) {
+			dfs(childNode, objNode[childNode], vis, objNode);
+		}
+	}
+}
+graphNode *cloneGraph(graphNode *node)
+{
+	unordered_map<graphNode*, bool> vis;
+	unordered_map<graphNode*, graphNode*> objNode;
+    graphNode *ans = new graphNode(node->data);
+	objNode[node] = ans;
+	dfs(node, ans, vis, objNode);
+	return ans;
+}
