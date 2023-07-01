@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+bool dfs(vector<vector<int>>& adj, int node, vector<int>& vis) {
+  if(vis[node] == 1) return false;
+  if(vis[node] == 0) return true;
+  vis[node] = 0;
+  for(int child: adj[node]) {
+    if(dfs(adj, child, vis)) {
+      return true;
+    }
+  }
+  vis[node] = 1;
+  return false;
+}
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>>& edges) {
+  vector<vector<int>> adj(n + 1, vector<int>());
+  for(auto& it: edges) {
+    adj[it.first].push_back(it.second);
+  }
+  vector<int> vis(n + 1, -1);
+  for(int i = 1; i <= n; i++) {
+    if(dfs(adj, i, vis)) {
+      return true;
+    }
+  }
+  return false;
+}
