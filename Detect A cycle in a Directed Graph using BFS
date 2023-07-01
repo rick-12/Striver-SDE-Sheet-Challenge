@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>>& edges) {
+  vector<vector<int>> adj(n + 1, vector<int>());
+  vector<int> indegree(n + 1, 0);
+  for(auto& it: edges) {
+    adj[it.first].push_back(it.second);
+    indegree[it.second]++;
+  }
+  queue<int> q;
+  for(int i = 1; i <= n; i++) {
+    if(indegree[i]) continue;
+    q.push(i);
+  }
+  int cnt = 0;
+  while(!q.empty()) {
+    int node = q.front();
+    q.pop();
+    cnt++;
+    for(auto& it: adj[node]) {
+      indegree[it]--;
+      if(indegree[it]) continue;
+      q.push(it);
+    }
+  }
+  return cnt != n;
+}
