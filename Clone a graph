@@ -28,24 +28,18 @@
 	};
 
 ******************************************************************************/
-void dfs(graphNode *node, graphNode* ans, unordered_map<graphNode*, bool>& vis, unordered_map<graphNode*, graphNode*>& objNode) {
-	vis[node] = true;
-	for(graphNode* childNode: node->neighbours) {
-		if(objNode.find(childNode) == objNode.end()) {
-			objNode[childNode] = new graphNode(childNode->data);
-		}
-		ans->neighbours.push_back(objNode[childNode]);
-		if(!vis[childNode]) {
-			dfs(childNode, objNode[childNode], vis, objNode);
-		}
+graphNode* clone(graphNode* node, unordered_map<graphNode*, graphNode*>& newNode) {
+	if(newNode.find(node) != newNode.end()) return newNode[node];
+	graphNode* copyNode = new graphNode(node->data);
+	newNode[node] = copyNode;
+	for(graphNode* child: node->neighbours) {
+		graphNode* cloneChild = clone(child, newNode);
+		copyNode->neighbours.push_back(cloneChild);
 	}
+	return copyNode;
 }
 graphNode *cloneGraph(graphNode *node)
 {
-	unordered_map<graphNode*, bool> vis;
-	unordered_map<graphNode*, graphNode*> objNode;
-    graphNode *ans = new graphNode(node->data);
-	objNode[node] = ans;
-	dfs(node, ans, vis, objNode);
-	return ans;
+	unordered_map<graphNode*, graphNode*> newNode;
+	return clone(node, newNode);
 }
