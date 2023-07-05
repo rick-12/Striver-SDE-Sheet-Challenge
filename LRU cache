@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+class Node {
+public:
+    int key;
+    int value;
+    Node *next;
+    Node *prev;
+
+    Node(int key, int value) {
+        this->key = key;
+        this->value = value;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+class LRUCache {
+    int capacity;
+    Node *head;
+    Node *tail;
+    unordered_map<int, Node*> hashMap;
+
+    void moveToFront(Node *curr) {
+        Node *prev = curr->prev;
+        Node *next = curr->next;
+
+        prev->next = next;
+        next->prev = prev;
+
+        insertAtFront(curr);
+    }
+    void deleteLastNode() {
+        Node *lastNode = tail->prev;
+        if(lastNode != head) {
+            tail->prev = lastNode->prev;
+            lastNode->prev->next = tail;
+            hashMap.erase(lastNode->key);
+            capacity++;
+            delete(lastNode);
+        }
+    }
+    void insertAtFront(Node *node) {
+        node->next = head->next;
+        node->prev = head;
+
+        head->next = node;
+        node->next->prev = node;
+    }
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    int get(int key) {
+        if(hashMap.find(key) == hashMap.end()) return -1;
+        moveToFront(hashMap[key]);
+        return hashMap[key]->value;
+    }
+    
+    void put(int key, int value) {
+        if(hashMap.find(key) == hashMap.end()) {
+            if(capacity == 0) {
+                deleteLastNode();
+            }
+            Node *node = new Node(key, value);
+            capacity--;
+            hashMap[key] = node;
+            insertAtFront(node);
+        }
+        else {
+            hashMap[key]->value = value;
+            moveToFront(hashMap[key]);
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
