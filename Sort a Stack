@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+void insert(stack<int> &st, int element) {
+	if(st.empty() or element > st.top()) {
+		st.push(element);
+	}
+	else {
+		int top_element = st.top();
+		st.pop();
+		insert(st, element);
+		st.push(top_element);
+	}
+}
+void sortStack(stack<int> &st)
+{
+	if(st.empty()) return;
+
+	int top_element = st.top();
+	st.pop();
+	sortStack(st);
+	insert(st, top_element);
+}
