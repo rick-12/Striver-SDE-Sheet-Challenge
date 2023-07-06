@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+bool comparator(pair<int, int> item1, pair<int, int> item2) {
+    double ratio1 = (double)item1.second / item1.first;
+    double ratio2 = (double)item2.second / item2.first;
+    return ratio1 > ratio2;
+}
+double maximumValue(vector<pair<int, int>>& items, int n, int w)
+{
+    sort(items.begin(), items.end(), comparator);
+    double ans = 0.0;
+    for(int i = 0; i < n; i++) {
+        pair<int, int> it = items[i];
+        double ratio = (double)it.second / it.first;
+        if(w >= it.first) {
+            ans += it.second;
+            w -= it.first;
+        }
+        else {
+            ans += ratio * w;
+            break;
+        }
+    }
+    return ans;
+}
