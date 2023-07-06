@@ -1,0 +1,20 @@
+#include<bits/stdc++.h>
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    vector<long> prev(value + 1, 0);
+    prev[0] = 1;
+    for(int i = 1; i <= n; i++) {
+        vector<long> curr(value + 1, 0);
+        curr[0] = 1;
+        for(int j = 1; j <= value; j++) {
+            if(denominations[i - 1] > j) {
+                curr[j] = prev[j];
+            }
+            else {
+                curr[j] = curr[j - denominations[i - 1]] + prev[j];
+            }
+        }
+        prev = curr;
+    }
+    return prev[value];
+}
