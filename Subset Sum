@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+// int f(vector<int>& arr, int index, int sum, vector<vector<int>>& dp) {
+//     if(sum == 0) return 1;
+//     if(index < 0) return 0;
+//     if(dp[index][sum] != -1) return dp[index][sum];
+//     if(arr[index] <= sum) {
+//         return dp[index][sum] = f(arr, index - 1, sum - arr[index], dp) or f(arr, index - 1, sum, dp);
+//     }
+//     else {
+//         return dp[index][sum] = f(arr, index - 1, sum, dp);
+//     }
+// }
+bool subsetSumToK(int n, int k, vector<int> &arr) {
+    vector<bool> dp(k + 1, false);
+    dp[0] = true;
+    for(int i = 1; i <= n; i++) {
+        for(int j = k; j >= 1; j--) {
+            if(arr[i - 1] <= j) {
+                dp[j] = dp[j - arr[i - 1]] or dp[j];
+            }
+        }
+    }
+    return dp[k];
+}
