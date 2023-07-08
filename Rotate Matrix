@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+void rotateMatrix(vector<vector<int>> &mat, int n, int m)
+{
+    int i = (n - 1) / 2;
+    int j = (m - 1) / 2;
+    int end = min(i, j);
+    for(int i = 0; i <= end; i++) {
+        if(i == m - i - 1) break;
+        int row, column;
+        int temp1 = mat[i][i];
+        row = i;
+        column = i + 1;
+        while(column < m - i) {
+            int temp2 = mat[row][column];
+            mat[row][column] = temp1;
+            temp1 = temp2;
+            column++;
+        }
+        row = i + 1;
+        column = m - i - 1;
+        while(row < n - i - 1) {
+            int temp2 = mat[row][column];
+            mat[row][column] = temp1;
+            temp1 = temp2;
+            row++;
+        }
+        row = n - i - 1;
+        column = m - i - 1;
+        while(column >= i) {
+            int temp2 = mat[row][column];
+            mat[row][column] = temp1;
+            temp1 = temp2;
+            column--;
+        }
+        row = n - i - 2;
+        column = i;
+        while(row > i) {
+            int temp2 = mat[row][column];
+            mat[row][column] = temp1;
+            temp1 = temp2;
+            row--;
+        }
+        mat[i][i] = temp1;
+    }
+}
