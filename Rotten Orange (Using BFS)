@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+vector<vector<int>> movements = {
+    {0, 1},
+    {0, -1},
+    {1, 0},
+    {-1, 0}
+};
+int minTimeToRot(vector<vector<int>>& grid, int n, int m)
+{
+    int cnt_ones = 0;
+    queue<pair<int, int>> q;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(grid[i][j] == 2) {
+                q.push(make_pair(i, j));
+            } else if(grid[i][j] == 1) {
+                cnt_ones++;
+            }
+        }
+    }
+    
+    int time = 0;
+    while(!q.empty()) {
+        int sizeOfQueue = q.size();
+        bool hasRotten = false;
+        for(int i = 1; i <= sizeOfQueue; i++) {
+            pair<int, int> curr = q.front();
+            q.pop();
+            for(vector<int> movement: movements) {
+                int x = curr.first + movement[0];
+                int y = curr.second + movement[1];
+                if(x >= 0 and x < n and y >= 0 and y < m and grid[x][y] == 1) {
+                    grid[x][y] = 2;
+                    q.push(make_pair(x, y));
+                    cnt_ones--;
+                    hasRotten = true;
+                }
+            }
+        }
+        if(hasRotten) time++;
+    }
+
+    if(cnt_ones != 0) return -1;
+    return time;
+}
