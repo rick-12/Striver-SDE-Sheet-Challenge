@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+vector<vector<int>> movements = {
+    {0, 1},
+    {1, 0},
+    {0, -1},
+    {-1, 0}
+};
+vector<vector<int>> floodFill(vector<vector<int>> &image, int x, int y, int newColor)
+{
+    int oldColor = image[x][y];
+    if(oldColor == newColor) return image;
+    int m = image.size();
+    int n = image[0].size();
+    queue<pair<int, int>> q;
+    q.push(make_pair(x, y));
+    image[x][y] = newColor;
+    while(!q.empty()) {
+        pair<int, int> cell = q.front();
+        q.pop();
+        for(auto& it: movements) {
+            int childX = cell.first + it[0];
+            int childY = cell.second + it[1];
+            if(childX >= 0 and childX < m and childY >= 0 and childY < n and image[childX][childY] == oldColor) {
+                q.push(make_pair(childX, childY));
+                image[childX][childY] = newColor;
+            }
+        }
+    }
+    return image;
+}
